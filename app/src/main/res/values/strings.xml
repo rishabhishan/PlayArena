@@ -9,4 +9,8 @@
     <string name="btn_coming_soon">COMING SOON</string>
     <string name="msg_no_ticket_found">No ticket found. Try scanning the QR Codes from http://api.androidhive.info/qrcodes/</string>
     <string name="lbl_scan_activity">Scan QR Code</string>
+
+    <string name="title_activity_login">Welcome</string>
+    <string name="password">Password</string>
+    <string name="authenticate">Authenticate</string>
 </resources>

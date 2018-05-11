@@ -41,7 +41,8 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         //Toast.makeText(this, barcode.displayValue, Toast.LENGTH_LONG).show();
         // ticket details activity by passing barcode
         Intent intent = new Intent(ScanActivity.this, TicketResultActivity.class);
-        intent.putExtra("time", barcode.displayValue);
+        intent.putExtra("checkin_time", barcode.displayValue.split("\n")[0]);
+        intent.putExtra("checkin_user_id", barcode.displayValue.split("\n")[1]);
         startActivity(intent);
     }
 
