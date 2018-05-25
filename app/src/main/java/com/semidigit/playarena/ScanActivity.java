@@ -41,9 +41,9 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         //Toast.makeText(this, barcode.displayValue, Toast.LENGTH_LONG).show();
         // ticket details activity by passing barcode
         Intent intent = new Intent(ScanActivity.this, TicketResultActivity.class);
-        intent.putExtra("checkin_time", barcode.displayValue.split("\n")[0]);
-        intent.putExtra("checkin_user_id", barcode.displayValue.split("\n")[1]);
+        intent.putExtra("checkin_time", barcode.displayValue);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -59,6 +59,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     @Override
     public void onScanError(String s) {
         Toast.makeText(getApplicationContext(), "Error occurred while scanning " + s, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

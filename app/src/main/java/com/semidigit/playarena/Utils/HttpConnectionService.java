@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.playarena.Utils;
 
 import android.util.Log;
 

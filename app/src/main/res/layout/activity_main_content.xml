@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    android:orientation="vertical"
+    tools:context="com.semidigit.playarena.MainActivity">
+
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:text="Collect Parking Ticket"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="@drawable/bg_gradient"/>
+
+    <Button
+        android:id="@+id/btn_generate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        android:foreground="?attr/selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:text="Generate Parking Ticket"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

@@ -26,7 +26,37 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_ticket_details"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btnCashCollect"
+            >
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                layout="@layout/activity_ticket_result_content"/>
+
+        </ScrollView>
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btnCashCollect"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/btn_color"
+            android:padding="10dp"
+            android:text="@string/cash_collected"
+            android:textSize="18sp"
+            android:onClick="saveInOut"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"/>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 
