@@ -51,6 +51,13 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity
+            android:name=".LostTicket"
+            android:label="@string/title_activity_ticket_generator"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 
     </application>
 

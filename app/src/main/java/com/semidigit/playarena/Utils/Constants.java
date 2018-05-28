@@ -7,7 +7,8 @@ public class Constants {
     public static final String LOG_BASE_TAG = "QR Code Gen";
     public static final String LOGIN_API_PATH = ROOT_DOMAIN + "logincheck.php";
     public static final String CHECKOUT_API_PATH = ROOT_DOMAIN + "checkout_entry.php";
-    public static final String CALCULATE_BILL_API_PATH = ROOT_DOMAIN + "calculate_bill.php";
+    public static final String CALCULATE_BILL_API_PATH = ROOT_DOMAIN + "calculate_bill_%s.php";
+    public static final String LOST_TICKET_API_PATH = ROOT_DOMAIN + "lost_ticket_%s.php";
     public static final String BLUETOOTH_PRINTER_NAME = "BlueTooth Printer";
     public static final String CHECKIN_API_PATH = ROOT_DOMAIN + "checkin_entry.php";
 

@@ -266,7 +266,12 @@ public class LoginActivity extends AppCompatActivity {
             super.onPreExecute();
             pdia = new ProgressDialog(context);
             pdia.setMessage("Authenticating...");
-            pdia.show();
+            if(!((Activity) context).isFinishing())
+            {
+                pdia.show();
+            }
+
+
         }
 
         @Override
@@ -315,6 +320,9 @@ public class LoginActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(context).edit().putString("password", password).apply();
                 PreferenceManager.getDefaultSharedPreferences(context).edit().putString("company_id", company_id).apply();
                 Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
                 return;
