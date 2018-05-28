@@ -8,6 +8,31 @@
     android:orientation="vertical"
     tools:context="com.semidigit.playarena.MainActivity">
 
+    <Button
+        android:id="@+id/daily_collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        android:foreground="?attr/selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:text="Check daily Collection"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btn_lost_ticket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        android:foreground="?attr/selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:text="Lost Parking Ticket"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:layout_weight="1"/>
 
     <Button
         android:id="@+id/btn_scan"
@@ -35,5 +60,7 @@
         android:textSize="18sp"
         android:padding="16dp"
         android:layout_weight="1"/>
+
+
 
 </LinearLayout>
