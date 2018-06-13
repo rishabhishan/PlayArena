@@ -90,11 +90,11 @@
             android:layout_marginTop="52dp"
             android:background="@color/btn_color"
             android:foreground="?attr/selectableItemBackground"
-
-            android:padding="10dp"
+            android:padding="16dp"
             android:text="@string/authenticate"
             android:textSize="18sp"
             android:onClick="login"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-condensed"/>
     </LinearLayout>

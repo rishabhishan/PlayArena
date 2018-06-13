@@ -19,17 +19,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".MainActivity"
-            android:label="Scan Ticket"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
@@ -39,26 +37,31 @@
         <activity
             android:name=".TicketResultActivity"
             android:windowSoftInputMode="adjustPan"
-            android:label="@string/title_activity_ticket"
+            android:label="@string/title_activity_ticket_result"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".DisplayQRActivity"
-            android:label="@string/title_activity_ticket_generator"
+            android:label="@string/title_activity_display_parking_ticket"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".LostTicketInput"
+            android:label="@string/title_activity_ticket_result"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".LostTicket"
-            android:label="@string/title_activity_ticket_generator"
+            android:label="@string/title_activity_ticket_result"
             android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".LostTicketInput"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
     </application>
 
 </manifest>

@@ -17,7 +17,13 @@ public class UtilityMethods{
         return formatter.format(d);
     }
 
+    public String getValueOrDefaultString(Object value, String defaultValue) {
+        return value.equals(null) ? defaultValue : (String)value;
+    }
 
+    public int getValueOrDefaultInt(Object value, int defaultValue) {
+        return value.equals(null) ? defaultValue : (int)value;
+    }
 }
 
 

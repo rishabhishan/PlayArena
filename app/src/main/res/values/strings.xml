@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Semidigit Parking Solution</string>
-    <string name="title_activity_ticket">Parking Reciept</string>
-    <string name="title_activity_ticket_generator">Parking Ticket</string>
+    <string name="title_activity_ticket_result">Parking Receipt</string>
+    <string name="title_activity_display_parking_ticket">Parking Ticket</string>
     <string name="lbl_duration">DURATION</string>
     <string name="lbl_genre">GENRE</string>
     <string name="lbl_rating">RATING</string>
@@ -14,4 +14,6 @@
     <string name="password">Password</string>
     <string name="authenticate">Authenticate</string>
     <string name="cash_collected">Cash Collected</string>
+
+    <string name="Rs">\u20B9</string>
 </resources>

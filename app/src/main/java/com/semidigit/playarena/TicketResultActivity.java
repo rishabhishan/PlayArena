@@ -66,6 +66,8 @@ public class TicketResultActivity extends AppCompatActivity {
     UtilityMethods utilityMethods;
     BTService btService;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +76,7 @@ public class TicketResultActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         btService = BTService.getInstance();
 
@@ -104,11 +107,18 @@ public class TicketResultActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = v.getText().toString();
-                    long discount = calculateDiscountFromPercentage(Integer.valueOf(text));
-                    et_discount_rs.setText(String.valueOf(discount));
-                    tv_totalAmount.setText(String.format(Constants.TOTAL_AMOUNT_FORMAT,final_amount));
-                    tv_discount.setText(String.format(Constants.DISCOUNT_FORMAT,discount));
-                    return true;
+                    if (Integer.valueOf(text)>100){
+                        Toast.makeText(getApplicationContext(),"Percentage can`t be greater than 100", Toast.LENGTH_SHORT).show();
+                        v.setText("");
+                        return true;
+                    }
+                    else if(text.length()>0){
+                        long discount = calculateDiscountFromPercentage(Integer.valueOf(text));
+                        et_discount_rs.setText(String.valueOf(discount));
+                        tv_totalAmount.setText(String.format(Constants.TOTAL_AMOUNT_FORMAT,final_amount));
+                        tv_discount.setText(String.format(Constants.DISCOUNT_FORMAT,discount));
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -119,22 +129,26 @@ public class TicketResultActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = v.getText().toString();
-                    long discount_percent = calculateDiscountFromRs(Integer.valueOf(text));
-                    et_discount_percent.setText(String.valueOf(discount_percent));
-                    tv_totalAmount.setText(String.format(Constants.TOTAL_AMOUNT_FORMAT,final_amount));
-                    tv_discount.setText(String.format(Constants.DISCOUNT_FORMAT,discount));
-                    return true;
+                    if(Integer.valueOf(text)>actual_amount){
+                        Toast.makeText(getApplicationContext(),"Discount can`t be greater than actual amount", Toast.LENGTH_SHORT).show();
+                        v.setText("");
+                        return true;
+                    }else if(text.length()>0){
+                        long discount_percent = calculateDiscountFromRs(Integer.valueOf(text));
+                        et_discount_percent.setText(String.valueOf(discount_percent));
+                        tv_totalAmount.setText(String.format(Constants.TOTAL_AMOUNT_FORMAT,final_amount));
+                        tv_discount.setText(String.format(Constants.DISCOUNT_FORMAT,discount));
+                        return true;
+                    }
                 }
                 return false;
             }
         });
 
         utilityMethods = new UtilityMethods(this);
-
         generateTicketUI(checkin_time);
         fab_bike.performClick();
     }
-
 
     public long calculateDiscountFromPercentage(int percentage){
         discount = (actual_amount*percentage)/100;
@@ -153,54 +167,54 @@ public class TicketResultActivity extends AppCompatActivity {
         switch (v.getId()){
             case R.id.fab_bicycle:
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BICYCLE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
             case R.id.fab_bike:
-                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BIKE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
             case R.id.fab_car:
-                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_color_pressed)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="CAR";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
             case R.id.fab_van:
-                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccentSecondary)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="VAN";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
             case R.id.fab_bus:
-                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 vehicleType="CAR";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
@@ -225,7 +239,6 @@ public class TicketResultActivity extends AppCompatActivity {
         tv_checkinTime.setText(utilityMethods.displayDate(dateStart));
         tv_checkOutTime.setText(utilityMethods.displayDate(dateEnd));
 
-
         long diff = dateEnd.getTime() - dateStart.getTime();
         diffMins = diff / (60 * 1000);
         diffHours = diff / (60 * 60 * 1000);
@@ -239,13 +252,17 @@ public class TicketResultActivity extends AppCompatActivity {
     }
 
     public void saveInOut(View view){
-        if(btService.mService.getState()== BluetoothService.STATE_CONNECTED){
-            printBillTask = new PrintBilltask(this, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins),String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
-            printBillTask.execute((Void) null);
-            checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
-            checkOutEntry.execute((Void) null);
-        }else{
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_INDEFINITE);
+        if(btService.mService!=null) {
+            if(btService.mService.getState()== BluetoothService.STATE_CONNECTED){
+                checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
+                checkOutEntry.execute((Void) null);
+            }else{
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        }
+        else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
     }
@@ -327,7 +344,7 @@ public class TicketResultActivity extends AppCompatActivity {
     }
 
 
-    class CheckOutEntry extends AsyncTask<Void, Void, Integer> {
+    class CheckOutEntry extends AsyncTask<Void, Void, JSONObject> {
         Context context;
         private ProgressDialog pdia;
         String in_time, out_time, out_id, total_time, vehicle_type, actual_amount, discount, final_amount, remarks, company_id;
@@ -359,7 +376,7 @@ public class TicketResultActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected JSONObject doInBackground(Void... params) {
             HashMap<String, String> postDataParams;
             postDataParams = new HashMap<String, String>();
             postDataParams.put("HTTP_ACCEPT", "application/json");
@@ -376,29 +393,47 @@ public class TicketResultActivity extends AppCompatActivity {
 
             HttpConnectionService service = new HttpConnectionService();
             String response = service.sendRequest(Constants.CHECKOUT_API_PATH, postDataParams);
+            JSONObject resultJsonObject = null;
             try {
-                JSONObject resultJsonObject = new JSONObject(response);
-                return (int)(resultJsonObject.get("responseCode"));
+                resultJsonObject = new JSONObject(response);
+                return resultJsonObject;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return 1;
+            return resultJsonObject;
         }
 
         @Override
-        protected void onPostExecute(final Integer responseCode) {
+        protected void onPostExecute(final JSONObject resultJsonObject) {
             checkOutEntry = null;
             if(pdia!=null)
                 pdia.dismiss();
+            int responseCode=1;
+            try {
+                responseCode = utilityMethods.getValueOrDefaultInt(resultJsonObject.get("responseCode"),1);
+            } catch (JSONException e) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
 
-            if(responseCode==0){
+            if (responseCode==1){
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Task Failed. Something went wrong. Try again!", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            else{
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Data synced with server", Snackbar.LENGTH_LONG);
                 snackbar.show();
-                finish();
-            }
-            else {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Server error. Please try again.", Snackbar.LENGTH_INDEFINITE);
-                snackbar.show();
+                try {
+                    String invoice_id = utilityMethods.getValueOrDefaultString(resultJsonObject.get("invoice_id"), "NA");
+                    System.out.println("****** "+ String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins));
+                    System.out.println("****** "+ String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
+                    printBillTask = new PrintBilltask(context, invoice_id, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins%60),String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
+                    printBillTask.execute((Void) null);
+
+                } catch (JSONException e) {
+                    snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
             }
         }
 
@@ -415,10 +450,11 @@ public class TicketResultActivity extends AppCompatActivity {
 
         Context context;
         private ProgressDialog pdia;
-        String in_time, out_time, total_time, total_amount;
+        String invoice_id, in_time, out_time, total_time, total_amount;
 
-        PrintBilltask(Context context, String in_time, String out_time, String total_time, String total_amount) {
+        PrintBilltask(Context context, String invoice_id, String in_time, String out_time, String total_time, String total_amount) {
             this.context = context;
+            this.invoice_id=invoice_id;
             this.in_time = in_time;
             this.out_time = out_time;
             this.total_time = total_time;
@@ -448,6 +484,7 @@ public class TicketResultActivity extends AppCompatActivity {
             btService.mService.write(RESET_PRINTER);
             btService.mService.write(ALIGN_LEFT);
             btService.mService.write(cc);
+            btService.mService.sendMessage("Invoice #          "+invoice_id, "GBK");
             btService.mService.sendMessage("CheckIn            "+in_time, "GBK");
             btService.mService.sendMessage("CheckOut           "+out_time, "GBK");
             btService.mService.sendMessage("Chargeable Time    "+total_time, "GBK");
