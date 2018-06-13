@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +74,7 @@ public class LostTicketInput extends AppCompatActivity{
             public void onTextChanged(CharSequence s, int start,int before, int count)
             {
                 // TODO Auto-generated method stub
-                if(et1.getText().toString().length()==1)
+                if(et2.getText().toString().length()==1)
                 {
                     et3.requestFocus();
                 }
@@ -91,7 +92,7 @@ public class LostTicketInput extends AppCompatActivity{
             public void onTextChanged(CharSequence s, int start,int before, int count)
             {
                 // TODO Auto-generated method stub
-                if(et1.getText().toString().length()==1)
+                if(et3.getText().toString().length()==1)
                 {
                     et4.requestFocus();
                 }
@@ -105,6 +106,32 @@ public class LostTicketInput extends AppCompatActivity{
 
         });
 
+        et4.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start,int before, int count)
+            {
+                // TODO Auto-generated method stub
+                if(et4.getText().toString().length()==1)
+                {
+                    hideKeyboard();
+                }
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
+    }
+
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public void proceed(View v){
@@ -112,9 +139,6 @@ public class LostTicketInput extends AppCompatActivity{
         calculateBillTask = new CalculateBillTask(this, vehicle_number, company_id);
         calculateBillTask.execute((Void) null);
     }
-
-
-
 
     class CalculateBillTask extends AsyncTask<Void, Void, JSONObject> {
         Context context;

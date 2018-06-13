@@ -3,7 +3,6 @@ package com.semidigit.playarena;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,7 +64,7 @@ public class LostTicket extends AppCompatActivity {
         fab_bicycle = findViewById(R.id.fab_bicycle);
         fab_bike = findViewById(R.id.fab_bike);
         fab_car = findViewById(R.id.fab_car);
-        fab_van = findViewById(R.id.fab_van);
+        fab_van = findViewById(R.id.fab_valet);
         fab_bus = findViewById(R.id.fab_bus);
         et_remarks=findViewById(R.id.et_remarks);
         company_id = PreferenceManager.getDefaultSharedPreferences(this).getString("company_id", "");
@@ -135,7 +134,7 @@ public class LostTicket extends AppCompatActivity {
                 calculateBillTask.execute((Void) null);
                 break;
 
-            case R.id.fab_van:
+            case R.id.fab_valet:
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));

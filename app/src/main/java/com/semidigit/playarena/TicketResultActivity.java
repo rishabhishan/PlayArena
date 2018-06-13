@@ -3,7 +3,6 @@ package com.semidigit.playarena;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,12 +11,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -49,7 +45,7 @@ public class TicketResultActivity extends AppCompatActivity {
 
     TextView tv_txtError, tv_checkinTime, tv_checkOutTime, tv_totalAmount, tv_totalTime, tv_discount;
     LinearLayout ll_ticketView;
-    FloatingActionButton fab_bicycle, fab_bike, fab_car, fab_van, fab_bus;
+    FloatingActionButton fab_bicycle, fab_bike, fab_car, fab_valet, fab_bus;
     EditText et_discount_percent, et_discount_rs, et_remarks;
 
     String checkin_time, checkout_time, checkout_user_id, company_id, vehicleType;
@@ -95,7 +91,7 @@ public class TicketResultActivity extends AppCompatActivity {
         fab_bicycle = findViewById(R.id.fab_bicycle);
         fab_bike = findViewById(R.id.fab_bike);
         fab_car = findViewById(R.id.fab_car);
-        fab_van = findViewById(R.id.fab_van);
+        fab_valet = findViewById(R.id.fab_valet);
         fab_bus = findViewById(R.id.fab_bus);
         et_discount_percent = findViewById(R.id.et_discount_percent);
         et_discount_rs = findViewById(R.id.et_discount_rs);
@@ -169,7 +165,7 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BICYCLE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
@@ -180,7 +176,7 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BIKE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
@@ -191,20 +187,9 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="CAR";
-                calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
-                calculateBillTask.execute((Void) null);
-                break;
-
-            case R.id.fab_van:
-                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                vehicleType="VAN";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
@@ -213,9 +198,20 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 vehicleType="CAR";
+                calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
+                calculateBillTask.execute((Void) null);
+                break;
+
+            case R.id.fab_valet:
+                fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                vehicleType="VALET";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
