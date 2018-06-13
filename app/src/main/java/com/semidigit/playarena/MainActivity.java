@@ -2,12 +2,14 @@ package com.semidigit.playarena;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -38,14 +40,26 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hoin.btsdk.BluetoothService;
 import com.semidigit.playarena.Utils.BTService;
 import com.semidigit.playarena.Utils.Constants;
+import com.semidigit.playarena.Utils.HttpConnectionService;
 import com.semidigit.playarena.Utils.UtilityMethods;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Set;
 
 import static com.semidigit.playarena.Utils.Constants.REQUEST_ENABLE_BT;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TotalCollectionTask totalCollectionTask = null;
+    TextView tv_total_collection, tv_current_date, tv_collections_count;
+
+    String user_id, company_id;
 
     BTService btService;
     UtilityMethods utilityMethods;
@@ -65,36 +79,44 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(btService.mService.getState()== BluetoothService.STATE_CONNECTED) {
-                    startActivity(new Intent(MainActivity.this, ScanActivity.class));
-                }else{
-                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.show();
-                }
+                startActivity(new Intent(MainActivity.this, ScanActivity.class));
             }
         });
 
         findViewById(R.id.btn_generate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(btService.mService.getState()== BluetoothService.STATE_CONNECTED) {
-                    startActivity(new Intent(MainActivity.this, DisplayQRActivity.class));
-                }else{
-                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.show();
-                }
+                startActivity(new Intent(MainActivity.this, DisplayQRActivity.class));
             }
         });
 
         findViewById(R.id.btn_lost_ticket).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this, LostTicket.class));
+                    startActivity(new Intent(MainActivity.this, LostTicketInput.class));
             }
         });
 
+        setDailyCollection();
 
     }
+
+    public void setDailyCollection(){
+        user_id = PreferenceManager.getDefaultSharedPreferences(this).getString("username", "");
+        company_id = PreferenceManager.getDefaultSharedPreferences(this).getString("company_id", "");
+
+        tv_total_collection=(TextView) findViewById(R.id.tv_total_collection);
+        tv_current_date=(TextView) findViewById(R.id.tv_current_date);
+        tv_collections_count=(TextView) findViewById(R.id.tv_collections_count);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yy");
+        tv_current_date.setText(formatter.format(new Date()));
+
+        totalCollectionTask = new TotalCollectionTask(this, user_id, company_id);
+        totalCollectionTask.execute((Void) null);
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,5 +161,91 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    class TotalCollectionTask extends AsyncTask<Void, Void, JSONObject> {
+        Context context;
+        private ProgressDialog pdia;
+        String company_id, staff_id;
+
+        TotalCollectionTask(Context context, String staff_id, String company_id) {
+            this.context = context;
+            this.staff_id=staff_id;
+            this.company_id = company_id;
+        }
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            pdia = new ProgressDialog(context);
+            pdia.setMessage("Retrieving details ...");
+            if(!((Activity) context).isFinishing())
+            {
+                pdia.show();
+            }
+        }
+
+        @Override
+        protected JSONObject doInBackground(Void... params) {
+            HashMap<String, String> postDataParams;
+            postDataParams = new HashMap<String, String>();
+            postDataParams.put("HTTP_ACCEPT", "application/json");
+            postDataParams.put("staff_id", staff_id);
+            postDataParams.put("company_id", company_id);
+
+            HttpConnectionService service = new HttpConnectionService();
+            String response = service.sendRequest(String.format(Constants.TOTAL_COLLECTION), postDataParams);
+            JSONObject resultJsonObject = null;
+            try {
+                resultJsonObject = new JSONObject(response);
+                return resultJsonObject;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return resultJsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONObject resultJsonObject) {
+            totalCollectionTask = null;
+            if(pdia!=null)
+                pdia.dismiss();
+            int responseCode=1;
+
+            try {
+                responseCode = utilityMethods.getValueOrDefaultInt(resultJsonObject.get("responseCode"),1);
+            } catch (JSONException e) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+
+            if (responseCode==1){
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Task Failed. Something went wrong. Try again!", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            else{
+                try {
+                    String total_amount = utilityMethods.getValueOrDefaultString(resultJsonObject.get("total_amount"),"0");
+                    String collection_count = utilityMethods.getValueOrDefaultString(resultJsonObject.get("collection_count"),"NA");
+                    tv_total_collection.setText(total_amount);
+                    tv_collections_count.setText(collection_count);
+                } catch (JSONException e) {
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
+            }
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            totalCollectionTask = null;
+            if(pdia!=null)
+                pdia.dismiss();
+        }
+    }
+
+
 
 }

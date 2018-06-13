@@ -7,8 +7,10 @@ public class Constants {
     public static final String LOG_BASE_TAG = "QR Code Gen";
     public static final String LOGIN_API_PATH = ROOT_DOMAIN + "logincheck.php";
     public static final String CHECKOUT_API_PATH = ROOT_DOMAIN + "checkout_entry.php";
-    public static final String CALCULATE_BILL_API_PATH = ROOT_DOMAIN + "calculate_bill_%s.php";
-    public static final String LOST_TICKET_API_PATH = ROOT_DOMAIN + "lost_ticket_%s.php";
+    public static final String LOST_TICKET_ENTRY_API_PATH = ROOT_DOMAIN + "lost_tikcet_entry.php";
+    public static final String CALCULATE_BILL_API_PATH = ROOT_DOMAIN + "%s/calculate_bill.php";
+    public static final String TOTAL_COLLECTION = ROOT_DOMAIN + "daily_collection.php";
+    public static final String LOST_TICKET_API_PATH = ROOT_DOMAIN + "%s/lost_ticket_bill_calculate.php";
     public static final String BLUETOOTH_PRINTER_NAME = "BlueTooth Printer";
     public static final String CHECKIN_API_PATH = ROOT_DOMAIN + "checkin_entry.php";
 
@@ -27,7 +29,7 @@ public class Constants {
     public static final String DATE_FORMAT="dd MMMM HH:mm";
     public static final String RATE_PER_HOUR_FORMAT="Rs %d/hr";
     public static final String TOTAL_TIME_FORMAT="%d Hrs %d min";
-    public static final String TOTAL_AMOUNT_FORMAT="Rs %d";
+    public static final String TOTAL_AMOUNT_FORMAT="Rs %s";
     public static final String DISCOUNT_FORMAT="Rs %d";
 
     public static final String FOOTER_MSG_TICKET="We will not be responsible for any loss/damage to your vehicle/belongings";

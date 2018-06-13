@@ -49,12 +49,13 @@
             android:foreground="?attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="16dp"
             android:background="@color/btn_color"
-            android:padding="10dp"
+            android:padding="16dp"
             android:text="@string/cash_collected"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:fontFamily="sans-serif-condensed"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

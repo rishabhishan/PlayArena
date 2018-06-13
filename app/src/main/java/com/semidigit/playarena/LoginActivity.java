@@ -145,38 +145,54 @@ public class LoginActivity extends AppCompatActivity {
     public final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Fetching printer Status", Snackbar.LENGTH_INDEFINITE);
-            snackbar.show();
+            pd.dismiss();
             switch (msg.what) {
                 case BluetoothService.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
                             Log.d(ACTIVITY_LOG_TAG, "Connect successful");
-                            snackbar.setText("Connected to printer");
-                            snackbar.show();
+                            Snackbar snackbar1 = Snackbar.make(findViewById(android.R.id.content), "Connected to printer", Snackbar.LENGTH_LONG);
+                            snackbar1.show();
                             check_existing_login();
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             Log.d(ACTIVITY_LOG_TAG, "Connecting");
-                            snackbar.setText("Connecting to printer");
-                            snackbar.show();
+                            Snackbar snackbar2 = Snackbar.make(findViewById(android.R.id.content), "Connecting to printer", Snackbar.LENGTH_SHORT);
+                            snackbar2.show();
                             break;
                         case BluetoothService.STATE_LISTEN:
+                            Log.d(ACTIVITY_LOG_TAG, "Listening");
+                            //Snackbar snackbar3 = Snackbar.make(findViewById(android.R.id.content), "Trying to connect", Snackbar.LENGTH_SHORT);
+                            //snackbar3.show();
+                            break;
                         case BluetoothService.STATE_NONE:
+                            Log.d(ACTIVITY_LOG_TAG, "None");
+                            //Snackbar snackbar4 = Snackbar.make(findViewById(android.R.id.content), "Trying to connect", Snackbar.LENGTH_SHORT);
+                            //snackbar4.show();
                             break;
                     }
                     break;
                 case BluetoothService.MESSAGE_CONNECTION_LOST:
                     Log.d(ACTIVITY_LOG_TAG, "Device connection lost");
-                    snackbar.setText("Connecting lost");
-                    snackbar.show();
-                    //btService.mService.connect(btService.con_dev);
+                    Snackbar snackbar3 = Snackbar.make(findViewById(android.R.id.content), "Device connection lost", Snackbar.LENGTH_INDEFINITE);
+                    snackbar3.setAction("Try Again", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            btService.mService.connect(btService.con_dev);
+                        }
+                    });
+                    snackbar3.show();
                     break;
                 case BluetoothService.MESSAGE_UNABLE_CONNECT:
                     Log.d(ACTIVITY_LOG_TAG, "Unable to connect to device");
-                    snackbar.setText("Unable to connect to printer");
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unable to connect to printer", Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction("Try Again", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            btService.mService.connect(btService.con_dev);
+                        }
+                    });
                     snackbar.show();
-                    btService.mService.connect(btService.con_dev);
                     break;
             }
         }
@@ -310,9 +326,9 @@ public class LoginActivity extends AppCompatActivity {
             int responseCode=1;
 
             try {
-                responseCode = (int)(resultJsonObject.get("responseCode"));
+                responseCode = utilityMethods.getValueOrDefaultInt(resultJsonObject.get("responseCode"),1);
             } catch (JSONException e) {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Something went wrong. Try again!", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
             if (responseCode==0){

@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
@@ -26,6 +29,7 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 import static com.semidigit.playarena.Utils.Constants.ALIGN_CENTER;
+import static com.semidigit.playarena.Utils.Constants.CHECKIN_API_PATH;
 import static com.semidigit.playarena.Utils.Constants.RESET_PRINTER;
 import static com.semidigit.playarena.Utils.Constants.bb;
 import static com.semidigit.playarena.Utils.Constants.bb2;
@@ -37,10 +41,11 @@ import static com.semidigit.playarena.Utils.Constants.cc;
 
 public class DisplayQRActivity extends AppCompatActivity {
 
-    private static final String apiPath = Constants.CHECKIN_API_PATH;
+
     private static final String ACTIVITY_LOG_TAG = ".DisplayQRActivity";
     ImageView qr;
-
+    EditText et_vehicle_no;
+    UtilityMethods utilityMethods;
     private PrintBilltask printBillTask = null;
     private CheckinEntry checkinEntry = null;
 
@@ -55,12 +60,34 @@ public class DisplayQRActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_qr);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         btService = BTService.getInstance();
+        utilityMethods =  new UtilityMethods(this);
         username = PreferenceManager.getDefaultSharedPreferences(this).getString("username", "");
         company_id = PreferenceManager.getDefaultSharedPreferences(this).getString("company_id", "");
         qr =  (ImageView)findViewById(R.id.iv_qr);
+        et_vehicle_no =  (EditText) findViewById(R.id.et_vehicle_no);
         util = new UtilityMethods(this);
         generate_qr();
+    }
+
+    public void printTicket(View v){
+        if(btService.mService!=null) {
+            if(btService.mService.getState()==BluetoothService.STATE_CONNECTED){
+                checkinEntry = new CheckinEntry(this, qr_data,username, company_id , et_vehicle_no.getText().toString());
+                checkinEntry.execute((Void) null);
+            }else{
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+            }
+        }
+        else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
 
     public void generate_qr() {
@@ -83,16 +110,6 @@ public class DisplayQRActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(btService.mService.getState()==BluetoothService.STATE_CONNECTED){
-            printBillTask = new PrintBilltask(this);
-            printBillTask.execute((Void) null);
-            checkinEntry = new CheckinEntry(this, qr_data,username, company_id );
-            checkinEntry.execute((Void) null);
-        }else{
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error connecting to printer. Try restarting the application", Snackbar.LENGTH_INDEFINITE);
-            snackbar.show();
-        }
-
     }
 
     @Override
@@ -101,17 +118,18 @@ public class DisplayQRActivity extends AppCompatActivity {
     }
 
 
-    class CheckinEntry extends AsyncTask<Void, Void, Integer> {
+    class CheckinEntry extends AsyncTask<Void, Void, JSONObject> {
 
         Context context;
         private ProgressDialog pdia;
-        String in_time, in_id, company_id;
+        String in_time, in_id, company_id, vehicle_no;
 
-        CheckinEntry(Context context, String in_time, String in_id, String company_id) {
+        CheckinEntry(Context context, String in_time, String in_id, String company_id, String vehicle_no) {
             this.context = context;
             this.in_time = in_time;
             this.in_id = in_id;
             this.company_id = company_id;
+            this.vehicle_no=vehicle_no;
         }
 
         @Override
@@ -123,7 +141,7 @@ public class DisplayQRActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected JSONObject doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             HashMap<String, String> postDataParams;
             postDataParams = new HashMap<String, String>();
@@ -131,32 +149,54 @@ public class DisplayQRActivity extends AppCompatActivity {
             postDataParams.put("in_time", in_time);
             postDataParams.put("in_id", in_id);
             postDataParams.put("company_id", company_id);
+            postDataParams.put("vehicle_no", vehicle_no);
 
             HttpConnectionService service = new HttpConnectionService();
-            String response = service.sendRequest(apiPath, postDataParams);
+            String response = service.sendRequest(CHECKIN_API_PATH, postDataParams);
+            JSONObject resultJsonObject = null;
             try {
-                JSONObject resultJsonObject = new JSONObject(response);
-                return (int)(resultJsonObject.get("responseCode"));
+                resultJsonObject = new JSONObject(response);
+                return resultJsonObject;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return 1;
+            return resultJsonObject;
         }
         // TODO: register the new account here
 
         @Override
-        protected void onPostExecute(final Integer responseCode) {
+        protected void onPostExecute(final JSONObject resultJsonObject) {
             checkinEntry = null;
-            pdia.dismiss();
+            if(pdia!=null)
+                pdia.dismiss();
+            int responseCode=1;
 
-            if(responseCode==0){
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Data synced with server", Snackbar.LENGTH_LONG);
+            try {
+                responseCode = utilityMethods.getValueOrDefaultInt(resultJsonObject.get("responseCode"),1);
+            } catch (JSONException e) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
-            else {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Server error. Please try again.", Snackbar.LENGTH_INDEFINITE);
+
+            if (responseCode==1){
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Task Failed. Something went wrong. Try again!", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
+            else{
+                try {
+                    String invoice_id = utilityMethods.getValueOrDefaultString(resultJsonObject.get("invoice_id"),"NA");
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Data synced with server", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    printBillTask = new PrintBilltask(context, invoice_id, et_vehicle_no.getText().toString());
+                    printBillTask.execute((Void) null);
+                } catch (JSONException e) {
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Unexpected response. Try again", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+
+
+
         }
 
         @Override
@@ -171,9 +211,12 @@ public class DisplayQRActivity extends AppCompatActivity {
 
         Context context;
         private ProgressDialog pdia;
+        String vehicle_no, invoice_id;
 
-        PrintBilltask(Context context) {
+        PrintBilltask(Context context, String invoice_id, String vehicle_no) {
             this.context = context;
+            this.vehicle_no=vehicle_no;
+            this.invoice_id=invoice_id;
         }
 
         @Override
@@ -196,7 +239,9 @@ public class DisplayQRActivity extends AppCompatActivity {
             btService.mService.sendMessage("Sarjapur Road", "GBK");
             btService.mService.sendMessage("==============================", "GBK");
             btService.mService.write(bb);
+            btService.mService.sendMessage(invoice_id, "GBK");
             btService.mService.sendMessage(current_timestamp, "GBK");
+            btService.mService.sendMessage(vehicle_no, "GBK");
 
             byte[] cmd;
             cmd = new byte[7];

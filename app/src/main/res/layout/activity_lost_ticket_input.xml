@@ -25,39 +25,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"></android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-
-    <RelativeLayout
+    <include
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="?actionBarSize"
-        android:layout_height="match_parent">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/btnCashCollect"
-            >
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                layout="@layout/activity_ticket_result_content"/>
-
-        </ScrollView>
-        <Button
-            android:layout_alignParentBottom="true"
-            android:id="@+id/btnCashCollect"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/btn_color"
-            android:padding="16dp"
-            android:text="@string/cash_collected"
-            android:textSize="18sp"
-            android:onClick="saveInOut"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-condensed"/>
-    </RelativeLayout>
+        layout="@layout/activity_lost_ticket_input_content"/>
 </android.support.design.widget.CoordinatorLayout>
 
