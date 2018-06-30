@@ -1,6 +1,5 @@
 package com.semidigit.playarena;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -43,10 +42,10 @@ import static com.semidigit.playarena.Utils.Constants.cc;
  * Created by rishabhk on 15/04/18.
  */
 
-public class DisplayQRActivity extends AppCompatActivity {
+public class DisplayQRActivityBluetooth extends AppCompatActivity {
 
 
-    private static final String ACTIVITY_LOG_TAG = ".DisplayQRActivity";
+    private static final String ACTIVITY_LOG_TAG = ".DisplayQRActivityBluetooth";
     ImageView qr;
     String vehicle_no;
     EditText et1, et2, et3, et4;
@@ -64,7 +63,7 @@ public class DisplayQRActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_qr);
+        setContentView(R.layout.display_qr_bluetooth);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -35,4 +35,15 @@ public class Constants {
     public static final String FOOTER_MSG_TICKET="We will not be responsible for any loss/damage to your vehicle/belongings";
     public static final String FOOTER_MSG_RECEIPT="THANK YOU AND DRIVE SAFELY!";
 
+    public static final int[][] u_infor = {
+            {0x1CBE, 0x0003},
+            {0x1CB0, 0x0003},
+            {0x0483, 0x5740},
+            {0x0493, 0x8760},
+            {0x0471, 0x0055}
+    };
+
+    public static final boolean BLUETOOTH_PRINTER_AT_ENTRY = false;
+
+
 }

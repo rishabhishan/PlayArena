@@ -229,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/bus"
-                    android:id="@+id/fab_bus"
+                    android:id="@+id/fab_hmv"
                     android:onClick="setVehicleType"
                     app:elevation="1dp"
                     />

@@ -43,7 +43,14 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".DisplayQRActivity"
+            android:name=".DisplayQRActivityBluetooth"
+            android:label="@string/title_activity_display_parking_ticket"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".DisplayQRActivityUSB"
             android:label="@string/title_activity_display_parking_ticket"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"

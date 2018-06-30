@@ -114,7 +114,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(ACTIVITY_LOG_TAG,"No paired device found/Printer not paired");
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Pair your bluetooth printer and restart the application.", Snackbar.LENGTH_LONG);
                 snackbar.show();
-                finish();
                 return;
             }
         }else{

@@ -86,7 +86,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_generate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, DisplayQRActivity.class));
+                if (Constants.BLUETOOTH_PRINTER_AT_ENTRY) {
+                    startActivity(new Intent(MainActivity.this, DisplayQRActivityBluetooth.class));
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, DisplayQRActivityUSB.class));
+                }
+
             }
         });
 
@@ -235,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-
         }
 
         @Override
