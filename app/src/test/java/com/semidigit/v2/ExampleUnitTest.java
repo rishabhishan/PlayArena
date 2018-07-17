@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import org.junit.Test;
 

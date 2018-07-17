@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -21,9 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;

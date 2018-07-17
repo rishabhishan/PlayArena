@@ -1,10 +1,10 @@
-package com.semidigit.playarena.Utils;
+package com.semidigit.v2.Utils;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 
-import static com.semidigit.playarena.Utils.Constants.REQUEST_ENABLE_BT;
+import static com.semidigit.v2.Utils.Constants.REQUEST_ENABLE_BT;
 
 public class BaseApplicationUtility extends Application {
 

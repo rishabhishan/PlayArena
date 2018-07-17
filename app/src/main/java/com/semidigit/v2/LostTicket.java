@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hoin.btsdk.BluetoothService;
-import com.semidigit.playarena.Utils.BTService;
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.BTService;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +27,12 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.semidigit.playarena.Utils.Constants.ALIGN_CENTER;
-import static com.semidigit.playarena.Utils.Constants.ALIGN_LEFT;
-import static com.semidigit.playarena.Utils.Constants.RESET_PRINTER;
-import static com.semidigit.playarena.Utils.Constants.bb;
-import static com.semidigit.playarena.Utils.Constants.bb2;
-import static com.semidigit.playarena.Utils.Constants.cc;
+import static com.semidigit.v2.Utils.Constants.ALIGN_CENTER;
+import static com.semidigit.v2.Utils.Constants.ALIGN_LEFT;
+import static com.semidigit.v2.Utils.Constants.RESET_PRINTER;
+import static com.semidigit.v2.Utils.Constants.bb;
+import static com.semidigit.v2.Utils.Constants.bb2;
+import static com.semidigit.v2.Utils.Constants.cc;
 
 public class LostTicket extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,10 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hoin.btsdk.BluetoothService;
-import com.semidigit.playarena.Utils.BTService;
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.BTService;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,12 +33,12 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.semidigit.playarena.Utils.Constants.ALIGN_CENTER;
-import static com.semidigit.playarena.Utils.Constants.ALIGN_LEFT;
-import static com.semidigit.playarena.Utils.Constants.RESET_PRINTER;
-import static com.semidigit.playarena.Utils.Constants.bb;
-import static com.semidigit.playarena.Utils.Constants.bb2;
-import static com.semidigit.playarena.Utils.Constants.cc;
+import static com.semidigit.v2.Utils.Constants.ALIGN_CENTER;
+import static com.semidigit.v2.Utils.Constants.ALIGN_LEFT;
+import static com.semidigit.v2.Utils.Constants.RESET_PRINTER;
+import static com.semidigit.v2.Utils.Constants.bb;
+import static com.semidigit.v2.Utils.Constants.bb2;
+import static com.semidigit.v2.Utils.Constants.cc;
 
 
 public class TicketResultActivity extends AppCompatActivity {
@@ -248,6 +248,8 @@ public class TicketResultActivity extends AppCompatActivity {
     }
 
     public void saveInOut(View view){
+        checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
+        checkOutEntry.execute((Void) null);
         if(btService.mService!=null) {
             if(btService.mService.getState()== BluetoothService.STATE_CONNECTED){
                 checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
@@ -423,7 +425,7 @@ public class TicketResultActivity extends AppCompatActivity {
                     String invoice_id = utilityMethods.getValueOrDefaultString(resultJsonObject.get("invoice_id"), "NA");
                     System.out.println("****** "+ String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins));
                     System.out.println("****** "+ String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
-                    printBillTask = new PrintBilltask(context, invoice_id, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins%60),String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
+                    printBillTask = new PrintBilltask(context, invoice_id, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins%60),final_amount);
                     printBillTask.execute((Void) null);
 
                 } catch (JSONException e) {
@@ -470,23 +472,33 @@ public class TicketResultActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            double gst_total = Double.valueOf(total_amount)*0.18;
+            double total_amnt = Double.valueOf(total_amount);
             btService.mService.write(RESET_PRINTER);
             btService.mService.write(bb2);
             btService.mService.write(ALIGN_CENTER);
-            btService.mService.sendMessage("BILL", "GBK");
+            btService.mService.sendMessage("INVOICE", "GBK");
             btService.mService.write(cc);
-            btService.mService.sendMessage("Play, Sarjapur Road", "GBK");
+            btService.mService.sendMessage("Play Arena Sports & Adventure Pvt Ltd", "GBK");
+            btService.mService.sendMessage("#Sy 75 Kasavanahalli, Amritha College Road", "GBK");
+            btService.mService.sendMessage("Off Sarjapur Rd, Bangalore-560035", "GBK");
             btService.mService.sendMessage("==============================", "GBK");
             btService.mService.write(RESET_PRINTER);
             btService.mService.write(ALIGN_LEFT);
             btService.mService.write(cc);
+            btService.mService.sendMessage("GST#           29AAGCP1029B1ZS", "GBK");
+            btService.mService.sendMessage("==============================", "GBK");
             btService.mService.sendMessage("Invoice #          "+invoice_id, "GBK");
             btService.mService.sendMessage("CheckIn            "+in_time, "GBK");
             btService.mService.sendMessage("CheckOut           "+out_time, "GBK");
             btService.mService.sendMessage("Chargeable Time    "+total_time, "GBK");
+            btService.mService.sendMessage("Amount             "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(total_amnt-gst_total)), "GBK");
+            btService.mService.sendMessage("==============================", "GBK");
+            btService.mService.sendMessage("CGST 9%            "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(gst_total/2)), "GBK");
+            btService.mService.sendMessage("SGST 9%            "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(gst_total/2)), "GBK");
             btService.mService.sendMessage("==============================", "GBK");
             btService.mService.write(bb);
-            btService.mService.sendMessage("Total              "+total_amount, "GBK");
+            btService.mService.sendMessage("Total              "+String.format(Constants.TOTAL_AMOUNT_FORMAT, total_amount), "GBK");
             btService.mService.sendMessage("\n", "GBK");
             btService.mService.write(ALIGN_CENTER);
             btService.mService.write(cc);

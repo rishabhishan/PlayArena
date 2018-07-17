@@ -1,4 +1,4 @@
-package com.semidigit.playarena.Utils;
+package com.semidigit.v2.Utils;
 
 import android.app.Application;
 import android.content.Context;
