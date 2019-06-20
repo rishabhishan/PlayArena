@@ -1,4 +1,4 @@
-package com.semidigit.playarena.Utils;
+package com.semidigit.v2.Utils;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.app.AppCompatActivity;

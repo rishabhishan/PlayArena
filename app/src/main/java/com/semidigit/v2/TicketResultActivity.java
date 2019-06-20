@@ -1,9 +1,8 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,12 +11,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -26,10 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hoin.btsdk.BluetoothService;
-import com.semidigit.playarena.Utils.BTService;
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.BTService;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,19 +33,19 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.semidigit.playarena.Utils.Constants.ALIGN_CENTER;
-import static com.semidigit.playarena.Utils.Constants.ALIGN_LEFT;
-import static com.semidigit.playarena.Utils.Constants.RESET_PRINTER;
-import static com.semidigit.playarena.Utils.Constants.bb;
-import static com.semidigit.playarena.Utils.Constants.bb2;
-import static com.semidigit.playarena.Utils.Constants.cc;
+import static com.semidigit.v2.Utils.Constants.ALIGN_CENTER;
+import static com.semidigit.v2.Utils.Constants.ALIGN_LEFT;
+import static com.semidigit.v2.Utils.Constants.RESET_PRINTER;
+import static com.semidigit.v2.Utils.Constants.bb;
+import static com.semidigit.v2.Utils.Constants.bb2;
+import static com.semidigit.v2.Utils.Constants.cc;
 
 
 public class TicketResultActivity extends AppCompatActivity {
 
     TextView tv_txtError, tv_checkinTime, tv_checkOutTime, tv_totalAmount, tv_totalTime, tv_discount;
     LinearLayout ll_ticketView;
-    FloatingActionButton fab_bicycle, fab_bike, fab_car, fab_van, fab_bus;
+    FloatingActionButton fab_bicycle, fab_bike, fab_car, fab_valet, fab_hmv;
     EditText et_discount_percent, et_discount_rs, et_remarks;
 
     String checkin_time, checkout_time, checkout_user_id, company_id, vehicleType;
@@ -95,8 +91,8 @@ public class TicketResultActivity extends AppCompatActivity {
         fab_bicycle = findViewById(R.id.fab_bicycle);
         fab_bike = findViewById(R.id.fab_bike);
         fab_car = findViewById(R.id.fab_car);
-        fab_van = findViewById(R.id.fab_van);
-        fab_bus = findViewById(R.id.fab_bus);
+        fab_valet = findViewById(R.id.fab_valet);
+        fab_hmv = findViewById(R.id.fab_hmv);
         et_discount_percent = findViewById(R.id.et_discount_percent);
         et_discount_rs = findViewById(R.id.et_discount_rs);
         et_remarks = findViewById(R.id.et_remarks);
@@ -169,8 +165,8 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_hmv.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BICYCLE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
@@ -180,8 +176,8 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_hmv.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="BIKE";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
@@ -191,31 +187,31 @@ public class TicketResultActivity extends AppCompatActivity {
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_hmv.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 vehicleType="CAR";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
-            case R.id.fab_van:
+            case R.id.fab_hmv:
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                vehicleType="VAN";
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                fab_hmv.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                vehicleType="HMV";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
 
-            case R.id.fab_bus:
+            case R.id.fab_valet:
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_van.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                fab_bus.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                vehicleType="CAR";
+                fab_valet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                fab_hmv.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                vehicleType="VALET";
                 calculateBillTask = new CalculateBillTask(this, diffMins, vehicleType, company_id);
                 calculateBillTask.execute((Void) null);
                 break;
@@ -252,6 +248,8 @@ public class TicketResultActivity extends AppCompatActivity {
     }
 
     public void saveInOut(View view){
+        checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
+        checkOutEntry.execute((Void) null);
         if(btService.mService!=null) {
             if(btService.mService.getState()== BluetoothService.STATE_CONNECTED){
                 checkOutEntry = new CheckOutEntry(this, checkin_time, checkout_time,checkout_user_id, String.valueOf(diffMins),vehicleType, String.valueOf(actual_amount), String.valueOf(discount), String.valueOf(final_amount), et_remarks.getText().toString(), company_id );
@@ -427,7 +425,7 @@ public class TicketResultActivity extends AppCompatActivity {
                     String invoice_id = utilityMethods.getValueOrDefaultString(resultJsonObject.get("invoice_id"), "NA");
                     System.out.println("****** "+ String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins));
                     System.out.println("****** "+ String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
-                    printBillTask = new PrintBilltask(context, invoice_id, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins%60),String.format(Constants.TOTAL_AMOUNT_FORMAT, final_amount));
+                    printBillTask = new PrintBilltask(context, invoice_id, utilityMethods.displayDate(dateStart), utilityMethods.displayDate(dateEnd), String.format(Constants.TOTAL_TIME_FORMAT, diffHours, diffMins%60),final_amount);
                     printBillTask.execute((Void) null);
 
                 } catch (JSONException e) {
@@ -474,23 +472,33 @@ public class TicketResultActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            double gst_total = Double.valueOf(total_amount)*0.18;
+            double total_amnt = Double.valueOf(total_amount);
             btService.mService.write(RESET_PRINTER);
             btService.mService.write(bb2);
             btService.mService.write(ALIGN_CENTER);
-            btService.mService.sendMessage("BILL", "GBK");
+            btService.mService.sendMessage("INVOICE", "GBK");
             btService.mService.write(cc);
-            btService.mService.sendMessage("Play, Sarjapur Road", "GBK");
+            btService.mService.sendMessage("Play Arena Sports & Adventure Pvt Ltd", "GBK");
+            btService.mService.sendMessage("#Sy 75 Kasavanahalli, Amritha College Road", "GBK");
+            btService.mService.sendMessage("Off Sarjapur Rd, Bangalore-560035", "GBK");
             btService.mService.sendMessage("==============================", "GBK");
             btService.mService.write(RESET_PRINTER);
             btService.mService.write(ALIGN_LEFT);
             btService.mService.write(cc);
+            btService.mService.sendMessage("GST#           29AAGCP1029B1ZS", "GBK");
+            btService.mService.sendMessage("==============================", "GBK");
             btService.mService.sendMessage("Invoice #          "+invoice_id, "GBK");
             btService.mService.sendMessage("CheckIn            "+in_time, "GBK");
             btService.mService.sendMessage("CheckOut           "+out_time, "GBK");
             btService.mService.sendMessage("Chargeable Time    "+total_time, "GBK");
+            btService.mService.sendMessage("Amount             "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(total_amnt-gst_total)), "GBK");
+            btService.mService.sendMessage("==============================", "GBK");
+            btService.mService.sendMessage("CGST 9%            "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(gst_total/2)), "GBK");
+            btService.mService.sendMessage("SGST 9%            "+String.format(Constants.TOTAL_AMOUNT_FORMAT, String.valueOf(gst_total/2)), "GBK");
             btService.mService.sendMessage("==============================", "GBK");
             btService.mService.write(bb);
-            btService.mService.sendMessage("Total              "+total_amount, "GBK");
+            btService.mService.sendMessage("Total              "+String.format(Constants.TOTAL_AMOUNT_FORMAT, total_amount), "GBK");
             btService.mService.sendMessage("\n", "GBK");
             btService.mService.write(ALIGN_CENTER);
             btService.mService.write(cc);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.semidigit.playarena">
+    package="com.semidigit.v2">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -43,7 +43,14 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".DisplayQRActivity"
+            android:name=".DisplayQRActivityBluetooth"
+            android:label="@string/title_activity_display_parking_ticket"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".DisplayQRActivityUSB"
             android:label="@string/title_activity_display_parking_ticket"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"

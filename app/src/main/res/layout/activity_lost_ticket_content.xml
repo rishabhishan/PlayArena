@@ -185,7 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/transportation_truck"
-                android:id="@+id/fab_van"
+                android:id="@+id/fab_valet"
                 android:onClick="setVehicleType"
                 app:elevation="1dp"
                 />

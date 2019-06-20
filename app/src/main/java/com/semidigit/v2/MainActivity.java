@@ -1,4 +1,4 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.Manifest;
 import android.app.Activity;
@@ -38,10 +38,10 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hoin.btsdk.BluetoothService;
-import com.semidigit.playarena.Utils.BTService;
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.BTService;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +52,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
-import static com.semidigit.playarena.Utils.Constants.REQUEST_ENABLE_BT;
+import static com.semidigit.v2.Utils.Constants.REQUEST_ENABLE_BT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,7 +86,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_generate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, DisplayQRActivity.class));
+                if (Constants.BLUETOOTH_PRINTER_AT_ENTRY) {
+                    startActivity(new Intent(MainActivity.this, DisplayQRActivityBluetooth.class));
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, DisplayQRActivityUSB.class));
+                }
+
             }
         });
 
@@ -235,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-
         }
 
         @Override

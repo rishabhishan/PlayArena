@@ -1,9 +1,8 @@
-package com.semidigit.playarena;
+package com.semidigit.v2;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,10 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hoin.btsdk.BluetoothService;
-import com.semidigit.playarena.Utils.BTService;
-import com.semidigit.playarena.Utils.Constants;
-import com.semidigit.playarena.Utils.HttpConnectionService;
-import com.semidigit.playarena.Utils.UtilityMethods;
+import com.semidigit.v2.Utils.BTService;
+import com.semidigit.v2.Utils.Constants;
+import com.semidigit.v2.Utils.HttpConnectionService;
+import com.semidigit.v2.Utils.UtilityMethods;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,12 +27,12 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.semidigit.playarena.Utils.Constants.ALIGN_CENTER;
-import static com.semidigit.playarena.Utils.Constants.ALIGN_LEFT;
-import static com.semidigit.playarena.Utils.Constants.RESET_PRINTER;
-import static com.semidigit.playarena.Utils.Constants.bb;
-import static com.semidigit.playarena.Utils.Constants.bb2;
-import static com.semidigit.playarena.Utils.Constants.cc;
+import static com.semidigit.v2.Utils.Constants.ALIGN_CENTER;
+import static com.semidigit.v2.Utils.Constants.ALIGN_LEFT;
+import static com.semidigit.v2.Utils.Constants.RESET_PRINTER;
+import static com.semidigit.v2.Utils.Constants.bb;
+import static com.semidigit.v2.Utils.Constants.bb2;
+import static com.semidigit.v2.Utils.Constants.cc;
 
 public class LostTicket extends AppCompatActivity {
 
@@ -65,7 +64,7 @@ public class LostTicket extends AppCompatActivity {
         fab_bicycle = findViewById(R.id.fab_bicycle);
         fab_bike = findViewById(R.id.fab_bike);
         fab_car = findViewById(R.id.fab_car);
-        fab_van = findViewById(R.id.fab_van);
+        fab_van = findViewById(R.id.fab_valet);
         fab_bus = findViewById(R.id.fab_bus);
         et_remarks=findViewById(R.id.et_remarks);
         company_id = PreferenceManager.getDefaultSharedPreferences(this).getString("company_id", "");
@@ -135,7 +134,7 @@ public class LostTicket extends AppCompatActivity {
                 calculateBillTask.execute((Void) null);
                 break;
 
-            case R.id.fab_van:
+            case R.id.fab_valet:
                 fab_bicycle.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_bike.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fab_car.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));

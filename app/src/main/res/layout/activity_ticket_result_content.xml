@@ -228,8 +228,8 @@
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/transportation_truck"
-                    android:id="@+id/fab_van"
+                    android:src="@drawable/bus"
+                    android:id="@+id/fab_hmv"
                     android:onClick="setVehicleType"
                     app:elevation="1dp"
                     />
@@ -242,8 +242,8 @@
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/bus"
-                    android:id="@+id/fab_bus"
+                    android:src="@drawable/valet_parking"
+                    android:id="@+id/fab_valet"
                     android:onClick="setVehicleType"
                     app:elevation="1dp"
                     />
